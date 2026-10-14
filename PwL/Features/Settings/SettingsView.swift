@@ -188,7 +188,7 @@ struct SettingsView: View {
                                 .font(.system(.subheadline, design: .monospaced, weight: .semibold))
                                 .foregroundStyle(Theme.inkSoft)
                         }
-                        TimelineView(.periodic(from: .now, by: 30)) { context in
+                        TimelineView(.periodic(from: .now, by: 10)) { context in
                             let online = account.love?.isOnline(at: context.date) == true
                             Label(LastSeenFormat.presence(account.love, now: context.date), systemImage: "circle.fill")
                                 .labelStyle(PresenceLabelStyle(online: online))

@@ -32,8 +32,8 @@ struct DashboardView: View {
                             title: "Minutes played",
                             color: Theme.peach
                         )
-                        // Re-evaluated every 30s so "Active 5m ago" keeps counting.
-                        TimelineView(.periodic(from: .now, by: 30)) { context in
+                        // Re-evaluated every 10s so a stale heartbeat flips to offline quickly.
+                        TimelineView(.periodic(from: .now, by: 10)) { context in
                             let online = account.love?.isOnline(at: context.date) == true
                             MetricTile(
                                 icon: online ? "dot.radiowaves.left.and.right" : "moon.zzz.fill",

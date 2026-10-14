@@ -29,6 +29,8 @@ final class AccountStore {
     @ObservationIgnored private var incomingListener: ListenerToken?
     @ObservationIgnored private var outgoingListener: ListenerToken?
     @ObservationIgnored private var heartbeat: Task<Void, Never>?
+    /// Whether we last told the backend we're online (avoids duplicate offline writes).
+    @ObservationIgnored private var markedOnline = false
 
     init(backend: AccountBackend) {
         self.backend = backend
@@ -71,6 +73,7 @@ final class AccountStore {
 
     func signOut() async {
         stopHeartbeat()
+        markedOnline = false
         if let uid = account?.uid { await backend.setOnline(uid: uid, false) }
         do {
             try backend.signOut()
@@ -92,10 +95,13 @@ final class AccountStore {
         startHeartbeat(uid: uid)
     }
 
-    /// The app left the screen: show as offline straight away.
+    /// The app left the screen: show as offline straight away. Called on `.inactive`
+    /// too, because swiping the app away in the app switcher kills it before
+    /// `.background` arrives.
     func appWentToBackground() async {
         stopHeartbeat()
-        guard let uid = account?.uid else { return }
+        guard markedOnline, let uid = account?.uid else { return }
+        markedOnline = false
         await backend.setOnline(uid: uid, false)
     }
 
@@ -213,6 +219,7 @@ final class AccountStore {
 
     private func startHeartbeat(uid: String) {
         heartbeat?.cancel()
+        markedOnline = true
         heartbeat = Task { [backend] in
             while !Task.isCancelled {
                 await backend.setOnline(uid: uid, true)

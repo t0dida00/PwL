@@ -19,7 +19,7 @@ struct UserAccount: Equatable, Sendable {
     var isPaired: Bool { partnerUID != nil }
 
     /// How often an open app refreshes `lastOnline`.
-    static let heartbeat: TimeInterval = 60
+    static let heartbeat: TimeInterval = 30
 
     /// Online only while the app is open *and* its heartbeat is fresh, so a force-quit
     /// or lost connection shows as offline after a few missed beats.

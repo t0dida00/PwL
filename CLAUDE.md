@@ -153,8 +153,9 @@ firestore.rules   Firestore security rules. Deploy them whenever the data model 
   Once a user is paired, `AccountStore` deletes any leftover requests. Unpairing clears both sides.
   `firestore.rules` lets another user set your `partnerUID` to themselves only when you're free **and** `requests/{you}_{them}` exists, and lets them clear it only when it's them. Pending requests show a badge on the Settings tab.
 - **Presence:** the user is online only while the app is in the foreground.
-  `AccountStore` writes `online: true` plus `lastOnline` every 60s (`UserAccount.heartbeat`) while active. It writes `online: false` when the app goes to background or the user signs out.
-  `UserAccount.isOnline(at:)` also needs a fresh heartbeat, so a killed app shows offline after about 2.5 minutes. The UI shows "Online now" or "Active 5m ago" (`LastSeenFormat.presence`) and refreshes through a `TimelineView`.
+  `AccountStore` writes `online: true` plus `lastOnline` every 30s (`UserAccount.heartbeat`) while active.
+  It writes `online: false` as soon as `scenePhase` is `.inactive` or `.background`, or the user signs out. `.inactive` matters because swiping the app away in the app switcher kills it before `.background` arrives.
+  `UserAccount.isOnline(at:)` also needs a fresh heartbeat (within 2.5 beats), so a crashed app or lost network shows offline after about 75s. Viewers re-evaluate every 10s. The UI shows "Online now" or "Active 5m ago" (`LastSeenFormat.presence`) and refreshes through a `TimelineView`.
 - **Dashboard:** days played together (distinct `playDays`), games played, minutes played, your love's presence, and matched since. The Scoreboard has its own tab.
 - **No Firebase config?** Without `Config/GoogleService-Info.plist` the app uses `LocalAccountBackend`. The login button reads "Continue with test account". Requesting any unknown valid ID creates a pretend "Test Love", who accepts after 2s. Tests pass `pretendLoveReplyDelay: nil` and drive both sides with two stores on one backend. Unit tests use this backend too.
 

@@ -26,7 +26,8 @@ struct RootView: View {
         .onChange(of: scenePhase) { _, phase in
             switch phase {
             case .active: account.appBecameActive()
-            case .background: Task { await account.appWentToBackground() }
+            // Inactive = app switcher, Control Center, a call…: the user isn't in the app.
+            case .inactive, .background: Task { await account.appWentToBackground() }
             default: break
             }
         }
