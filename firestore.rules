@@ -1,0 +1,76 @@
+rules_version = '2';
+
+// PwL Firestore rules — deploy in Firebase console → Firestore → Rules
+// (or `firebase deploy --only firestore:rules`).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function changedOnly(keys) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(keys);
+    }
+
+    // PwL IDs: one document per code → { uid }. Codes are permanent.
+    match /codes/{code} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.uid == request.auth.uid;
+      allow update, delete: if false;
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.auth.uid == uid;
+      // Owners edit their own profile, but can't change their code.
+      allow update: if signedIn() && request.auth.uid == uid
+                    && request.resource.data.code == resource.data.code
+                    || isBeingPairedWithMe()
+                    || isBeingUnpairedFromMe();
+      allow delete: if false;
+
+      // Someone may set this user's partner to themselves only if the user is free
+      // and asked them first (accepting `requests/{uid}_{me}`)…
+      function isBeingPairedWithMe() {
+        return signedIn()
+          && changedOnly(['partnerUID', 'pairID'])
+          && resource.data.get('partnerUID', null) == null
+          && request.resource.data.partnerUID == request.auth.uid
+          && exists(/databases/$(database)/documents/requests/$(uid + '_' + request.auth.uid));
+      }
+      // …and may clear it only if they are that partner.
+      function isBeingUnpairedFromMe() {
+        return signedIn()
+          && changedOnly(['partnerUID', 'pairID'])
+          && resource.data.get('partnerUID', null) == request.auth.uid
+          && request.resource.data.get('partnerUID', null) == null;
+      }
+    }
+
+    // Match requests: {from}_{to}. Only the two people involved see them; the sender
+    // creates, either side deletes (accept / decline / cancel). Never edited.
+    match /requests/{requestID} {
+      function involved(data) {
+        return request.auth.uid == data.from || request.auth.uid == data.to;
+      }
+      // `resource == null` lets the app check whether a request exists.
+      allow read: if signedIn() && (resource == null || involved(resource.data));
+      allow create: if signedIn()
+                    && request.resource.data.from == request.auth.uid
+                    && request.resource.data.to != request.auth.uid
+                    && requestID == request.auth.uid + '_' + request.resource.data.to
+                    && get(/databases/$(database)/documents/users/$(request.resource.data.to)).data.get('partnerUID', null) == null;
+      allow update: if false;
+      allow delete: if signedIn() && (resource == null || involved(resource.data));
+    }
+
+    // Shared couple stats, readable/writable only by the two members.
+    match /pairs/{pairID} {
+      allow read: if signedIn() && request.auth.uid in resource.data.members;
+      allow create: if signedIn() && request.auth.uid in request.resource.data.members;
+      allow update: if signedIn() && request.auth.uid in resource.data.members
+                    && request.resource.data.members == resource.data.members;
+      allow delete: if false;
+    }
+  }
+}
