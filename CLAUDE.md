@@ -8,7 +8,7 @@ Every user has a unique 8-character **PwL ID**. To match, one person enters the 
 UI wording: call the other person **"your love"**, not "partner" or "player 2".
 
 ## Tech stack
-- Swift 6 (strict concurrency), SwiftUI, iOS 17+, iPhone only, portrait, light mode.
+- Swift 6 (strict concurrency), SwiftUI, iOS 17+, iPhone only, light mode. Portrait everywhere except the Onet match, which is landscape. Info.plist allows both orientations, and `OrientationLock` (`Core/OrientationLock.swift`, reported through `AppDelegate`) picks per screen: call `OrientationLock.set(.landscape)` on appear and `.set(.portrait)` on disappear.
 - Observation (`@Observable`) for state. No Combine and no `ObservableObject`.
 - Dependencies, both via SPM in `project.yml`: **Firebase** (FirebaseAuth, FirebaseFirestore) 12.x and **GoogleSignIn** 9.x. Don't add others without a good reason.
 - Music is synthesized with `AVAudioEngine`, so there are no audio assets.
@@ -77,6 +77,9 @@ firestore.rules   Firestore security rules. Deploy them whenever the data model 
   - One player calls `host(as:uid:loveUID:)` and the other calls `browse(as:uid:loveUID:)` then `join(_:)`. A room accepts exactly one person.
   - Only the matched love can connect. Hosts advertise their account `uid`, browsers list only hosts whose uid is their `partnerUID`, and the host accepts an invitation only when its context (the guest's uid) is its love.
   - Names are exchanged with a lobby-level `hello`, which sets `partnerName`.
+  - **A connection belongs to one game's lobby.** `PartnerConnectionCard(gameID:)` passes the game ID to `host`/`browse` (it is in the discovery info), so rooms are only listed to browsers in the same game.
+    Going back to the game list (`appState.path` becomes empty, watched in `MainTabView`) or tapping Leave calls `leaveLobby()`, which sends `bye` and then disconnects.
+    The partner shows "{name} left the lobby" (`nearby.notice`), so "connected" always means both of you are in the same lobby. Game screens treat any `!nearby.isConnected` as "connection lost".
   - It is injected with `.environment(nearby)`. `PartnerConnectionCard` is the shared create/join UI.
 - Games send their own `Codable` message enum with `nearby.send(_:)`. The screen that currently owns the match sets `nearby.onGameMessage`. The setup screen sets it to receive `.start`, and the game screen sets it on appear.
 - **Host is the referee.** Player 0 is the host and player 1 is the guest.
@@ -104,6 +107,35 @@ firestore.rules   Firestore security rules. Deploy them whenever the data model 
 - Numbers containing 6 or 9 are underlined so the reader can tell which way is up.
 - The board fits the screen when the cells are at least 40pt. Otherwise it scrolls in 2D, and pinch zooms between 0.6× and 2.5×.
 - Lifetime per-player metrics are stored in `PlayerRecordsStore` (`Core/PlayerRecords.swift`), keyed by game ID and player name: games, duels, wins, found, mistakes, time and fastest find. `Features/Scoreboard` shows them. Future competitive games should reuse this store with their own `gameID`.
+
+### Caro (`Games/Caro`)
+- Vietnamese gomoku on squared exercise-book paper. Players take turns, and the first to get **5 in a row** (across, down or diagonal) wins.
+- The board is always **100×100** (`CaroConfig.boardSize`).
+- Setup choice (the host picks):
+  - Rule: **Free** (five or more wins) or **Vietnamese** (`blockedEnds`: a line blocked by the opponent at both ends doesn't win; the board edge doesn't count as a block).
+- **Turn-based, so there is no referee.** Each device validates its own tap with `CaroGame.place(at:by:)` and sends `move(index)`. The other device applies the same call. Moves that arrive while paused are still applied.
+- **Rounds:** round `n` is started by player `n % 2`, who plays X. `restart(round:)` only moves forward, so duplicate restarts are ignored. The series `score` and `draws` are kept until leaving.
+- `CaroBoardView` is a viewport, not a scroll view. A `Canvas` draws only the visible squares, because a full 100×100 sheet would be a huge texture.
+  The view keeps its own `center` (in squares) and `cell` size (16–64pt): drag moves it, pinch zooms, and taps are mapped back to a cell index.
+  It starts at the middle of the board and jumps to a new move that lands off-screen; the scope button goes to the last move. The last move is highlighted and the winning line is struck through.
+- Lifetime records are stored in `CaroGame.records` (`gameID` "caro"): games, duels, wins and time. The Scoreboard shows a "Caro wins" card with draws.
+
+### Onet (`Games/Onet`), the "Pikachu" link game
+- Tap two tiles with the same face to link them. The link may have at most **3 straight segments (2 turns)** through empty cells, including the ring just outside the board.
+  The path search is `OnetGame.path(from:to:in:rows:columns:)`, a breadth-first search by segments that returns the corner points.
+- **One board: 9 rows × 16 columns** (`OnetConfig.rows` / `.columns`). That is 144 tiles, so each of the **36 country flags** (`OnetTileFace`) appears exactly 4 times, giving 72 pairs per level. The flags were chosen to look clearly different from each other. They are **not Pokémon art**, which is copyrighted. They sit on raised cream tiles (`Theme.Tile`).
+- The match screen is **landscape**: the HUD (level, clock, pairs left, both scores) sits in the `GameControlBar` center and the board takes the rest. The setup screen stays portrait.
+- Setup choice (the host picks): levels only. `OnetBoardGenerator` shuffles the 144 tiles and guarantees a playable start.
+- **Race like Find Numbers.** There are no turns and no time limit.
+  - The guest checks locally (`check`) and sends `claim(first, second)`. The host calls `claim(_:_:by:)`, where the first one wins, and broadcasts `matched` (or `rejected`). The guest applies it with `applyMatch`.
+  - Picking two different faces is a mistake with a 0.8s lockout (mirrored with `mistake`). The same face with no path just moves the pick to the new tile.
+- **Levels** (setup: 1 level, 3 levels or all 9). `OnetLevel` lists them: 1 Classic, 2 fall down, 3 float up, 4 slide left, 5 slide right, 6 squeeze to the middle, 7 split to the sides, 8 squash to the middle, 9 spread to top and bottom.
+  From level 2 on, `slide()` compacts each of `level.lines(rows:columns:)` toward its first cell after every match.
+  Clearing a board starts the next level with a board seeded from `seed` plus the level number, so both devices advance in step without a message. Scores add up across levels, and the view shows a "Level N" card for 2s.
+  - Tiles have stable `tileIDs`, so the board animates sliding.
+  - `revision` is bumped on every board change. The guest sends it with `claim`, and on sliding levels the host rejects claims made on an older board, because the cells may now hold other tiles.
+- **Stuck board.** When no pair is linkable, both devices reshuffle the remaining faces with a seed derived from the match seed and `shuffleCount`, so the boards stay identical without a message.
+- Winner: most pairs, then fewest mistakes. Records are stored under `OnetGame.records` (`gameID` "onet"), and the Scoreboard shows an "Onet wins" card.
 
 ## Accounts & Firebase
 - **Login:** Google Sign-In, then Firebase Auth (`FirebaseAccountBackend.signIn`). On first login the account is created with a unique PwL ID. Nickname defaults to the first word of the Google display name.

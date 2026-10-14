@@ -42,6 +42,13 @@ enum Theme {
         static let margin = Color(red: 0.93, green: 0.40, blue: 0.45).opacity(0.55)
     }
 
+    /// Raised "mahjong" tiles (Onet).
+    enum Tile {
+        static let face = Color(red: 1.0, green: 0.95, blue: 0.88)
+        static let edge = Color(red: 0.86, green: 0.70, blue: 0.56)
+        static let board = Color(red: 0.42, green: 0.20, blue: 0.55).opacity(0.08)
+    }
+
     // MARK: Gradients
     static let background = LinearGradient(
         colors: [Color(red: 1.0, green: 0.93, blue: 0.94), Color(red: 0.96, green: 0.91, blue: 1.0)],

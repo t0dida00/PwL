@@ -28,7 +28,7 @@ struct FindNumbersSetupView: View {
 
                 section("Your love") {
                     if account.isPaired {
-                        PartnerConnectionCard()
+                        PartnerConnectionCard(gameID: FindNumbersGame.gameID)
                     } else {
                         notMatched
                     }

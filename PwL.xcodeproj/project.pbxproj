@@ -12,32 +12,43 @@
 		09C075817EF1B752432D29E6 /* FindNumbersSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 566858C3CA7413399F998591 /* FindNumbersSetupView.swift */; };
 		28656308FC887FD696E8BB1C /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFC2C1840B8FB96446FE97 /* ScoreboardView.swift */; };
 		298F757C9269E60BCDDBE417 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F7080876C6B2E7E3E50490 /* Theme.swift */; };
+		2B355D8B21F05615F7D7E5C8 /* CaroTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388015B89A1B9EABC7ABA0E3 /* CaroTests.swift */; };
 		376D7C4C84FE16CB6649AFF1 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 5A62FA81EE449D8CBA3CAB22 /* FirebaseFirestore */; };
 		431C02C0CE4FE820A9D33D26 /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D217AB462CAA67ED2996E0D /* AccountStore.swift */; };
 		4AAD752C59636E692D4C4B2B /* LocalAccountBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CE855D5A2FB1DD9FEBE6620 /* LocalAccountBackend.swift */; };
 		4FAFB9A91427B1BD8B1E897D /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FC7B963F93E08929AFE98AF /* LoginView.swift */; };
+		52C081434CBA3B474BAAE5F6 /* OnetGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 128A88FB770AA07193509460 /* OnetGameView.swift */; };
 		530801E364F3A0C9D0DA1358 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9921A7042B4CE7B94CFE13D5 /* MainTabView.swift */; };
 		562459B1DDB1EF80D3219B4E /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B15276B42A9C94F0FF19C64B /* AvatarView.swift */; };
+		5D372485FAC0C6DBA2187E1C /* CaroGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFBBC147846AF89F48122E2 /* CaroGame.swift */; };
 		63BC84C7ED7219EAC2A523D9 /* NumberBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ACBCED5145359FCD602D0DE /* NumberBoardView.swift */; };
 		652ECE38722BB0FF0CFE9E0E /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73D0FD80F4BD57B37751444 /* LoadingView.swift */; };
+		66CE7C42535B7E41DDA93A61 /* CaroBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6968D29EA9386D285DB6F456 /* CaroBoardView.swift */; };
+		6B0AAB52B5B3AA6803FF440C /* OnetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35594068308E46EDBA3E444 /* OnetTests.swift */; };
 		745AE2538EDCD86F7E8E518A /* FindNumbersModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8DECFC5AED152C2FF22F99A /* FindNumbersModels.swift */; };
+		7734A17FBC74ADFD14F49F47 /* OnetSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC0827CF6D844BC77697DD9 /* OnetSetupView.swift */; };
 		82669461D5712494CB6C3418 /* FindNumbersArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = F546DD5A7C95A84CE60E3AB6 /* FindNumbersArtwork.swift */; };
 		87C74AAEFC05A826DA956D4F /* FindNumbersGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C4F93D606A293015A6F06E2 /* FindNumbersGameView.swift */; };
 		88EBB8A946E1EAEA76DF9F20 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D3FCEB040CF386DA60094 /* DashboardView.swift */; };
 		8D774F0F034792EAD0C4D063 /* AccountTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3111164D10DF2E7CB30DCAC /* AccountTests.swift */; };
+		96086A05A1D3D60F586B67F4 /* OnetBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26D5D6CCF4CB53950EB2B751 /* OnetBoardView.swift */; };
 		98D2DB46A0578F9CC55B42C7 /* AccountModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8F32F78FCCFAC33984725D /* AccountModels.swift */; };
 		9CFCA019588FEB57968FEA0C /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CBB7A061FECE671E537EFB /* AudioManager.swift */; };
+		9DC15688B62614211A146C69 /* CaroSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F988B9225A631773A6FC6A5B /* CaroSetupView.swift */; };
 		9F73BCE9494B5BD13A06C704 /* FindNumbersGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 635BCC297BCF920B4CBE219A /* FindNumbersGame.swift */; };
 		A4456A4D2CC4FEDFA6507B27 /* FirebaseAccountBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63FA822B6A8EAAB202E6A04C /* FirebaseAccountBackend.swift */; };
 		A82198F7201FF789FB7A95A8 /* FindNumbersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262D192A2290571FFFB10202 /* FindNumbersTests.swift */; };
 		BAFF268B38EF4595AA183956 /* FindNumbersMatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = F81766998751BF26787165B4 /* FindNumbersMatch.swift */; };
 		BB6461AE88213E48FFA32EEF /* GameListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6CEA85CE7650867A9539D12 /* GameListView.swift */; };
+		C4A39E72B2A203B382E2A9B0 /* CaroGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBBA139B5D3172E191799F1 /* CaroGameView.swift */; };
 		C6606F216DDB314D436FDFE2 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04AD2C07958C6657790C9AF /* AppState.swift */; };
 		CC81EF996EDABDC46E886EAA /* PartnerConnectionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469746B47B9D4E4C58C3B1FC /* PartnerConnectionCard.swift */; };
 		D39C8746350C132854066387 /* PlayerRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DD6B1C677774B6BDD77231 /* PlayerRecords.swift */; };
+		D93CE7C79A8EA513DB248855 /* OnetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F93ACC013748A3912E41C /* OnetGame.swift */; };
 		DA6B4BF47C86C36CDC2C8627 /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6132588651CBA6A0B8F422C /* Components.swift */; };
 		EF2906DFDA88C3F3F105290E /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 60BC0BF73D2D1A3567429DF7 /* FirebaseAuth */; };
 		F0101529E20E2E81E94DA6AC /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1514B1EE83918C60626F5824 /* RootView.swift */; };
+		F2B5D7723B0B07552BA83325 /* OrientationLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A1E50F66A5C270FA7627E80 /* OrientationLock.swift */; };
 		F8E7F1069922D09F6577B5E8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = FF813A7B1080E7449504B92D /* GoogleSignIn */; };
 		FD9EAD166366AEF47AF9936E /* NearbyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27063FBC6F6F4FA8487D3B5C /* NearbyService.swift */; };
 		FE67ADB47847FCBBFA41AA69 /* SeededGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B843EACF4352094ED1EFA4A /* SeededGenerator.swift */; };
@@ -56,14 +67,17 @@
 
 /* Begin PBXFileReference section */
 		0B843EACF4352094ED1EFA4A /* SeededGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeededGenerator.swift; sourceTree = "<group>"; };
+		128A88FB770AA07193509460 /* OnetGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnetGameView.swift; sourceTree = "<group>"; };
 		1514B1EE83918C60626F5824 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		15DD6B1C677774B6BDD77231 /* PlayerRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRecords.swift; sourceTree = "<group>"; };
 		1D217AB462CAA67ED2996E0D /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
 		262D192A2290571FFFB10202 /* FindNumbersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNumbersTests.swift; sourceTree = "<group>"; };
+		26D5D6CCF4CB53950EB2B751 /* OnetBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnetBoardView.swift; sourceTree = "<group>"; };
 		27063FBC6F6F4FA8487D3B5C /* NearbyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyService.swift; sourceTree = "<group>"; };
 		2ACBCED5145359FCD602D0DE /* NumberBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberBoardView.swift; sourceTree = "<group>"; };
 		2BCFC2C1840B8FB96446FE97 /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
 		381D1BE592641B339310A535 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		388015B89A1B9EABC7ABA0E3 /* CaroTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaroTests.swift; sourceTree = "<group>"; };
 		3C4F93D606A293015A6F06E2 /* FindNumbersGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNumbersGameView.swift; sourceTree = "<group>"; };
 		469746B47B9D4E4C58C3B1FC /* PartnerConnectionCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartnerConnectionCard.swift; sourceTree = "<group>"; };
 		4CE855D5A2FB1DD9FEBE6620 /* LocalAccountBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAccountBackend.swift; sourceTree = "<group>"; };
@@ -75,12 +89,19 @@
 		635BCC297BCF920B4CBE219A /* FindNumbersGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNumbersGame.swift; sourceTree = "<group>"; };
 		63FA822B6A8EAAB202E6A04C /* FirebaseAccountBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseAccountBackend.swift; sourceTree = "<group>"; };
 		67EAC16936C6F0B1A2AEB285 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		6968D29EA9386D285DB6F456 /* CaroBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaroBoardView.swift; sourceTree = "<group>"; };
+		6A1E50F66A5C270FA7627E80 /* OrientationLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationLock.swift; sourceTree = "<group>"; };
+		7DC0827CF6D844BC77697DD9 /* OnetSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnetSetupView.swift; sourceTree = "<group>"; };
 		7FC7B963F93E08929AFE98AF /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		9921A7042B4CE7B94CFE13D5 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		A4F7080876C6B2E7E3E50490 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		A6CEA85CE7650867A9539D12 /* GameListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameListView.swift; sourceTree = "<group>"; };
 		B15276B42A9C94F0FF19C64B /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
+		B35594068308E46EDBA3E444 /* OnetTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnetTests.swift; sourceTree = "<group>"; };
+		B53F93ACC013748A3912E41C /* OnetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnetGame.swift; sourceTree = "<group>"; };
+		BDBBA139B5D3172E191799F1 /* CaroGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaroGameView.swift; sourceTree = "<group>"; };
 		C04AD2C07958C6657790C9AF /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		CCFBBC147846AF89F48122E2 /* CaroGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaroGame.swift; sourceTree = "<group>"; };
 		D6132588651CBA6A0B8F422C /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
 		DA5CA1DBF681C43A1EFE7D4C /* PwLTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = PwLTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3111164D10DF2E7CB30DCAC /* AccountTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTests.swift; sourceTree = "<group>"; };
@@ -89,6 +110,7 @@
 		F546DD5A7C95A84CE60E3AB6 /* FindNumbersArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNumbersArtwork.swift; sourceTree = "<group>"; };
 		F73D0FD80F4BD57B37751444 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		F81766998751BF26787165B4 /* FindNumbersMatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindNumbersMatch.swift; sourceTree = "<group>"; };
+		F988B9225A631773A6FC6A5B /* CaroSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaroSetupView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,7 +130,9 @@
 		03A2F0FC42534755EBC1982B /* Games */ = {
 			isa = PBXGroup;
 			children = (
+				661EA4651E7C6677888124A0 /* Caro */,
 				5EC99AB305A9329FB56E9F2F /* FindNumbers */,
+				ACF56ED33B888369512446A3 /* Onet */,
 			);
 			path = Games;
 			sourceTree = "<group>";
@@ -214,6 +238,17 @@
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
+		661EA4651E7C6677888124A0 /* Caro */ = {
+			isa = PBXGroup;
+			children = (
+				6968D29EA9386D285DB6F456 /* CaroBoardView.swift */,
+				CCFBBC147846AF89F48122E2 /* CaroGame.swift */,
+				BDBBA139B5D3172E191799F1 /* CaroGameView.swift */,
+				F988B9225A631773A6FC6A5B /* CaroSetupView.swift */,
+			);
+			path = Caro;
+			sourceTree = "<group>";
+		};
 		7185B880C7ECF9EA61FD838F /* Multiplayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,7 +261,9 @@
 			isa = PBXGroup;
 			children = (
 				E3111164D10DF2E7CB30DCAC /* AccountTests.swift */,
+				388015B89A1B9EABC7ABA0E3 /* CaroTests.swift */,
 				262D192A2290571FFFB10202 /* FindNumbersTests.swift */,
+				B35594068308E46EDBA3E444 /* OnetTests.swift */,
 			);
 			path = PwLTests;
 			sourceTree = "<group>";
@@ -258,6 +295,17 @@
 			path = Login;
 			sourceTree = "<group>";
 		};
+		ACF56ED33B888369512446A3 /* Onet */ = {
+			isa = PBXGroup;
+			children = (
+				26D5D6CCF4CB53950EB2B751 /* OnetBoardView.swift */,
+				B53F93ACC013748A3912E41C /* OnetGame.swift */,
+				128A88FB770AA07193509460 /* OnetGameView.swift */,
+				7DC0827CF6D844BC77697DD9 /* OnetSetupView.swift */,
+			);
+			path = Onet;
+			sourceTree = "<group>";
+		};
 		B9E97F416CAF754C414B4E38 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +320,7 @@
 			isa = PBXGroup;
 			children = (
 				55CBB7A061FECE671E537EFB /* AudioManager.swift */,
+				6A1E50F66A5C270FA7627E80 /* OrientationLock.swift */,
 				15DD6B1C677774B6BDD77231 /* PlayerRecords.swift */,
 				0B843EACF4352094ED1EFA4A /* SeededGenerator.swift */,
 				A4F7080876C6B2E7E3E50490 /* Theme.swift */,
@@ -415,7 +464,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D774F0F034792EAD0C4D063 /* AccountTests.swift in Sources */,
+				2B355D8B21F05615F7D7E5C8 /* CaroTests.swift in Sources */,
 				A82198F7201FF789FB7A95A8 /* FindNumbersTests.swift in Sources */,
+				6B0AAB52B5B3AA6803FF440C /* OnetTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +479,10 @@
 				C6606F216DDB314D436FDFE2 /* AppState.swift in Sources */,
 				9CFCA019588FEB57968FEA0C /* AudioManager.swift in Sources */,
 				562459B1DDB1EF80D3219B4E /* AvatarView.swift in Sources */,
+				66CE7C42535B7E41DDA93A61 /* CaroBoardView.swift in Sources */,
+				5D372485FAC0C6DBA2187E1C /* CaroGame.swift in Sources */,
+				C4A39E72B2A203B382E2A9B0 /* CaroGameView.swift in Sources */,
+				9DC15688B62614211A146C69 /* CaroSetupView.swift in Sources */,
 				DA6B4BF47C86C36CDC2C8627 /* Components.swift in Sources */,
 				88EBB8A946E1EAEA76DF9F20 /* DashboardView.swift in Sources */,
 				82669461D5712494CB6C3418 /* FindNumbersArtwork.swift in Sources */,
@@ -444,6 +499,11 @@
 				530801E364F3A0C9D0DA1358 /* MainTabView.swift in Sources */,
 				FD9EAD166366AEF47AF9936E /* NearbyService.swift in Sources */,
 				63BC84C7ED7219EAC2A523D9 /* NumberBoardView.swift in Sources */,
+				96086A05A1D3D60F586B67F4 /* OnetBoardView.swift in Sources */,
+				D93CE7C79A8EA513DB248855 /* OnetGame.swift in Sources */,
+				52C081434CBA3B474BAAE5F6 /* OnetGameView.swift in Sources */,
+				7734A17FBC74ADFD14F49F47 /* OnetSetupView.swift in Sources */,
+				F2B5D7723B0B07552BA83325 /* OrientationLock.swift in Sources */,
 				CC81EF996EDABDC46E886EAA /* PartnerConnectionCard.swift in Sources */,
 				D39C8746350C132854066387 /* PlayerRecords.swift in Sources */,
 				FF607016C9ABC2D417B3537E /* PwLApp.swift in Sources */,
@@ -624,7 +684,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = PwL;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -649,7 +709,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = PwL;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

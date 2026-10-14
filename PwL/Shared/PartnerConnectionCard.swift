@@ -1,9 +1,13 @@
 import SwiftUI
 
 /// Create / join a room with your matched love's device. Reusable by any two-player game.
+/// Rooms are per game: only someone in the same game's lobby can join.
 struct PartnerConnectionCard: View {
     @Environment(NearbyService.self) private var nearby
     @Environment(AccountStore.self) private var account
+
+    /// The game whose lobby this is (e.g. `CaroGame.gameID`).
+    let gameID: String
 
     private var localName: String { account.nickname }
 
@@ -31,13 +35,18 @@ struct PartnerConnectionCard: View {
 
     private var idle: some View {
         VStack(alignment: .leading, spacing: Theme.Spacing.s) {
+            if let notice = nearby.notice {
+                Label(notice, systemImage: "door.left.hand.open")
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(Theme.rose)
+            }
             Text("Both of you open this game on your own phone, close together with Wi-Fi or Bluetooth on.")
                 .font(.system(.footnote, design: .rounded))
                 .foregroundStyle(Theme.inkSoft)
             HStack(spacing: Theme.Spacing.s) {
                 Button {
                     if let me = account.account, let loveUID = me.partnerUID {
-                        nearby.host(as: localName, uid: me.uid, loveUID: loveUID)
+                        nearby.host(as: localName, uid: me.uid, loveUID: loveUID, game: gameID)
                     }
                 } label: {
                     Label("Create room", systemImage: "house.fill")
@@ -45,7 +54,7 @@ struct PartnerConnectionCard: View {
                 .buttonStyle(PrimaryButtonStyle())
                 Button {
                     if let me = account.account, let loveUID = me.partnerUID {
-                        nearby.browse(as: localName, uid: me.uid, loveUID: loveUID)
+                        nearby.browse(as: localName, uid: me.uid, loveUID: loveUID, game: gameID)
                     }
                 } label: {
                     Label("Join", systemImage: "person.2.fill")
@@ -113,7 +122,7 @@ struct PartnerConnectionCard: View {
                 .foregroundStyle(Theme.rose)
             playerBadge(nearby.partnerName ?? account.loveNickname, color: Theme.playerColor(nearby.isHost ? 1 : 0))
             Spacer(minLength: 0)
-            Button("Leave", role: .destructive) { nearby.stop() }
+            Button("Leave", role: .destructive) { nearby.leaveLobby() }
                 .font(.system(.subheadline, design: .rounded, weight: .semibold))
                 .foregroundStyle(Theme.danger)
         }

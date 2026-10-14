@@ -7,7 +7,11 @@ import Observation
 /// shown, and the host only accepts their love (account uids are exchanged in discovery
 /// info / invitation context). Once connected, games exchange
 /// their own Codable messages through `send(_:)` / `onGameMessage`. The service itself
-/// only knows about the lobby-level `hello` (partner name exchange).
+/// only knows about the lobby-level `hello` (partner name exchange) and `bye`.
+///
+/// A connection belongs to one game's lobby: rooms are only listed to browsers in the
+/// same game, and `leaveLobby()` (leaving the game's screens) tells the partner and
+/// disconnects, so "connected" always means both of you are in the same lobby.
 @MainActor
 @Observable
 final class NearbyService {
@@ -35,6 +39,8 @@ final class NearbyService {
     private enum Envelope: Codable {
         case hello(name: String)
         case game(Data)
+        /// The sender left the lobby.
+        case bye
     }
 
     static let serviceType = "pwl-game"
@@ -43,6 +49,8 @@ final class NearbyService {
     private(set) var role: Role?
     private(set) var hosts: [NearbyHost] = []
     private(set) var partnerName: String?
+    /// One-off message for the lobby UI, e.g. "Jim left the lobby".
+    private(set) var notice: String?
 
     /// Receives game-level payloads. The screen currently driving the match sets this.
     @ObservationIgnored var onGameMessage: ((Data) -> Void)?
@@ -55,17 +63,19 @@ final class NearbyService {
     @ObservationIgnored private var localUID = ""
     /// Account uid of the matched love — the only peer we show / accept.
     @ObservationIgnored private var loveUID = ""
+    /// Game whose lobby this connection belongs to.
+    @ObservationIgnored private var gameID = ""
 
     var isConnected: Bool { status == .connected }
     var isHost: Bool { role == .host }
 
-    func host(as name: String, uid: String, loveUID: String) {
+    func host(as name: String, uid: String, loveUID: String, game: String) {
         stop()
-        let peer = setUp(name: name, uid: uid, loveUID: loveUID)
+        let peer = setUp(name: name, uid: uid, loveUID: loveUID, game: game)
         role = .host
         let advertiser = MCNearbyServiceAdvertiser(
             peer: peer,
-            discoveryInfo: ["name": localName, "uid": uid],
+            discoveryInfo: ["name": localName, "uid": uid, "game": game],
             serviceType: Self.serviceType
         )
         advertiser.delegate = delegate
@@ -74,9 +84,9 @@ final class NearbyService {
         status = .hosting
     }
 
-    func browse(as name: String, uid: String, loveUID: String) {
+    func browse(as name: String, uid: String, loveUID: String, game: String) {
         stop()
-        let peer = setUp(name: name, uid: uid, loveUID: loveUID)
+        let peer = setUp(name: name, uid: uid, loveUID: loveUID, game: game)
         role = .guest
         let browser = MCNearbyServiceBrowser(peer: peer, serviceType: Self.serviceType)
         browser.delegate = delegate
@@ -89,6 +99,24 @@ final class NearbyService {
         guard let session, let browser else { return }
         browser.invitePeer(host.peer, to: session, withContext: Data(localUID.utf8), timeout: 20)
         status = .connecting(host.name)
+    }
+
+    /// Leaving the game's screens: tell the partner, then disconnect.
+    func leaveLobby() {
+        guard status != .idle else { return }
+        sendEnvelope(.bye)
+        // Give the goodbye a moment to go out before the session closes.
+        let closing = session.map(Unchecked.init)
+        session = nil
+        stop()
+        Task {
+            try? await Task.sleep(for: .milliseconds(400))
+            closing?.value.disconnect()
+        }
+    }
+
+    func clearNotice() {
+        notice = nil
     }
 
     /// Leaves the room and tears everything down.
@@ -113,7 +141,9 @@ final class NearbyService {
 
     // MARK: Private
 
-    private func setUp(name: String, uid: String, loveUID: String) -> MCPeerID {
+    private func setUp(name: String, uid: String, loveUID: String, game: String) -> MCPeerID {
+        notice = nil
+        gameID = game
         localName = name
         localUID = uid
         self.loveUID = loveUID
@@ -167,11 +197,14 @@ final class NearbyService {
             partnerName = name
         case .game(let payload):
             onGameMessage?(payload)
+        case .bye:
+            notice = "\(partnerName ?? "Your love") left the lobby"
+            stop()
         }
     }
 
-    fileprivate func found(_ peer: MCPeerID, name: String, uid: String?) {
-        guard uid == loveUID, !hosts.contains(where: { $0.peer == peer }) else { return }
+    fileprivate func found(_ peer: MCPeerID, name: String, uid: String?, game: String?) {
+        guard uid == loveUID, game == gameID, !hosts.contains(where: { $0.peer == peer }) else { return }
         hosts.append(NearbyHost(name: name, peer: peer))
     }
 
@@ -240,7 +273,8 @@ private final class Delegate: NSObject, MCSessionDelegate, MCNearbyServiceAdvert
         let peer = Unchecked(value: peerID)
         let name = info?["name"] ?? peerID.displayName
         let uid = info?["uid"]
-        Task { @MainActor [owner] in owner?.found(peer.value, name: name, uid: uid) }
+        let game = info?["game"]
+        Task { @MainActor [owner] in owner?.found(peer.value, name: name, uid: uid, game: game) }
     }
 
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {

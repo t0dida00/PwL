@@ -21,6 +21,22 @@ struct GameInfo: Identifiable {
             route: .findNumbersSetup
         ),
         GameInfo(
+            id: "caro",
+            title: "Caro",
+            badge: nil,
+            artwork: .caro,
+            colors: [Theme.plum, Theme.rose],
+            route: .caroSetup
+        ),
+        GameInfo(
+            id: "onet",
+            title: "Onet",
+            badge: nil,
+            artwork: .onet,
+            colors: [Theme.peach, Theme.lilac],
+            route: .onetSetup
+        ),
+        GameInfo(
             id: "coming-soon",
             title: "More games",
             badge: "Coming soon",
@@ -36,6 +52,10 @@ enum GameArtwork {
     case symbol(String)
     /// Scattered numbers under a magnifying glass.
     case findNumbers
+    /// X / O grid with a winning stroke.
+    case caro
+    /// Two matching tiles linked over a third.
+    case onet
 }
 
 struct GameListView: View {
@@ -50,7 +70,7 @@ struct GameListView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: Theme.Spacing.m) {
                 VStack(alignment: .leading, spacing: Theme.Spacing.xs) {
-                    Text(account.isPaired ? "Hi \(account.nickname) & \(account.loveNickname)" : "Hi \(account.nickname)")
+                    Text("Game List")
                         .font(.system(.title, design: .rounded, weight: .black))
                         .foregroundStyle(Theme.ink)
                     Text("Pick a game to play together")
@@ -196,6 +216,10 @@ private struct GameTile: View {
                 .shadow(color: .black.opacity(0.15), radius: 6, y: 3)
         case .findNumbers:
             FindNumbersArtwork()
+        case .caro:
+            CaroArtwork()
+        case .onet:
+            OnetArtwork()
         }
     }
 }

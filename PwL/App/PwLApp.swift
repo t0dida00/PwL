@@ -3,6 +3,7 @@ import SwiftUI
 
 @main
 struct PwLApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     @State private var appState = AppState()
     @State private var audio = AudioManager()
     @State private var nearby = NearbyService()

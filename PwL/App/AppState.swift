@@ -18,6 +18,11 @@ final class AppState {
     /// Navigation stack of the Games tab (game list → setup → play).
     var path: [Route] = []
 
+    /// Pops the top Games screen; safe to call twice (e.g. a double tap).
+    func leaveScreen() {
+        if !path.isEmpty { path.removeLast() }
+    }
+
     func resetNavigation() {
         path.removeAll()
         selectedTab = .games
@@ -28,4 +33,8 @@ final class AppState {
 enum Route: Hashable {
     case findNumbersSetup
     case findNumbersMatch(FindNumbersMatch)
+    case caroSetup
+    case caroMatch(CaroMatch)
+    case onetSetup
+    case onetMatch(OnetMatch)
 }

@@ -139,13 +139,22 @@ struct ModalCard<Content: View>: View {
             Rectangle()
                 .fill(.ultraThinMaterial)
                 .ignoresSafeArea()
-            VStack(spacing: Theme.Spacing.m, content: content)
-                .padding(Theme.Spacing.l)
-                .frame(maxWidth: 340)
-                .background(.white, in: RoundedRectangle(cornerRadius: Theme.Radius.large, style: .continuous))
-                .shadow(color: Theme.plum.opacity(0.2), radius: 24, y: 10)
-                .padding(Theme.Spacing.l)
+            // Scrolls only when the card is taller than the screen (e.g. in landscape).
+            ViewThatFits(in: .vertical) {
+                card
+                ScrollView { card }
+                    .scrollBounceBehavior(.basedOnSize)
+            }
         }
+    }
+
+    private var card: some View {
+        VStack(spacing: Theme.Spacing.m, content: content)
+            .padding(Theme.Spacing.l)
+            .frame(maxWidth: 340)
+            .background(.white, in: RoundedRectangle(cornerRadius: Theme.Radius.large, style: .continuous))
+            .shadow(color: Theme.plum.opacity(0.2), radius: 24, y: 10)
+            .padding(Theme.Spacing.l)
     }
 }
 

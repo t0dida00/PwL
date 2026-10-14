@@ -29,7 +29,7 @@ struct FindNumbersGameView: View {
 
     private var localPlayer: Int { match.localPlayer }
     private var partnerPlayer: Int { 1 - localPlayer }
-    private var isConnectionLost: Bool { partnerLeft || nearby.status == .lost }
+    private var isConnectionLost: Bool { partnerLeft || !nearby.isConnected }
 
     var body: some View {
         VStack(spacing: Theme.Spacing.s) {
@@ -230,7 +230,7 @@ struct FindNumbersGameView: View {
                     .font(.system(.title3, design: .rounded, weight: .black))
                     .foregroundStyle(Theme.ink)
                     .multilineTextAlignment(.center)
-                Button("Back to lobby") { appState.path.removeLast() }
+                Button("Back to lobby") { appState.leaveScreen() }
                     .buttonStyle(PrimaryButtonStyle())
             }
             .transition(.opacity)
@@ -283,11 +283,11 @@ struct FindNumbersGameView: View {
 
     @ViewBuilder
     private func resultSummary(_ result: FindNumbersGame.Result) -> some View {
-        Text(result.winnerIndex == nil ? "🤝" : result.winnerIndex == localPlayer ? "👑" : "💪")
+        Text(result.winnerIndex == nil ? "🤝" : result.winnerIndex == localPlayer ? "👑" : "😭")
             .font(.system(size: 52))
         Group {
             if let winner = result.winnerIndex {
-                Text(winner == localPlayer ? "You win!" : "\(result.players[winner].name) wins!")
+                Text(winner == localPlayer ? "You win!" : "You lost")
                     .foregroundStyle(Theme.playerColor(winner))
             } else {
                 Text("It's a tie!")
@@ -404,7 +404,7 @@ struct FindNumbersGameView: View {
     private func leave(to destination: Destination) {
         nearby.send(FindNumbersMessage.leave)
         switch destination {
-        case .setup: appState.path.removeLast()
+        case .setup: appState.leaveScreen()
         case .games: appState.path.removeAll()
         }
     }

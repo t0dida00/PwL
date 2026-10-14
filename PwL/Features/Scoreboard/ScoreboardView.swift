@@ -4,6 +4,8 @@ import SwiftUI
 struct ScoreboardView: View {
     @Environment(AccountStore.self) private var account
     @State private var records: [PlayerRecord] = []
+    @State private var caroRecords: [PlayerRecord] = []
+    @State private var onetRecords: [PlayerRecord] = []
     @State private var confirmReset = false
 
     private var names: [String] { account.playerNames }
@@ -17,11 +19,11 @@ struct ScoreboardView: View {
                         .foregroundStyle(Theme.plum)
                         .textCase(.uppercase)
                     HStack(alignment: .firstTextBaseline, spacing: Theme.Spacing.m) {
-                        winsColumn(0)
+                        winsColumn(0, records)
                         Text("–")
                             .font(.system(size: 40, weight: .black, design: .rounded))
                             .foregroundStyle(Theme.inkSoft)
-                        winsColumn(1)
+                        winsColumn(1, records)
                     }
                     Text("Find Numbers")
                         .font(.system(.footnote, design: .rounded))
@@ -33,6 +35,9 @@ struct ScoreboardView: View {
                 ForEach(records.indices, id: \.self) { index in
                     PlayerRecordCard(name: names[index], color: Theme.playerColor(index), record: records[index])
                 }
+
+                winsCard("Caro wins", caroRecords, unit: "rounds")
+                winsCard("Onet wins", onetRecords, unit: "games")
 
                 Button("Reset scoreboard", role: .destructive) { confirmReset = true }
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
@@ -49,12 +54,38 @@ struct ScoreboardView: View {
             Button("Cancel", role: .cancel) {}
             Button("Reset", role: .destructive) {
                 FindNumbersGame.records.reset(names)
+                CaroGame.records.reset(names)
+                OnetGame.records.reset(names)
                 load()
             }
         }
     }
 
-    private func winsColumn(_ index: Int) -> some View {
+    /// Wins for each of you in one game, plus how many were played and drawn.
+    private func winsCard(_ title: String, _ records: [PlayerRecord], unit: String) -> some View {
+        let played = records.first?.duels ?? 0
+        let draws = max(0, played - records.map(\.wins).reduce(0, +))
+        return VStack(spacing: Theme.Spacing.xs) {
+            Text(title)
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
+                .foregroundStyle(Theme.plum)
+                .textCase(.uppercase)
+            HStack(alignment: .firstTextBaseline, spacing: Theme.Spacing.m) {
+                winsColumn(0, records)
+                Text("–")
+                    .font(.system(size: 40, weight: .black, design: .rounded))
+                    .foregroundStyle(Theme.inkSoft)
+                winsColumn(1, records)
+            }
+            Text("\(played) \(unit) · \(draws) draws")
+                .font(.system(.footnote, design: .rounded))
+                .foregroundStyle(Theme.inkSoft)
+        }
+        .frame(maxWidth: .infinity)
+        .card()
+    }
+
+    private func winsColumn(_ index: Int, _ records: [PlayerRecord]) -> some View {
         VStack(spacing: 0) {
             Text("\(records.indices.contains(index) ? records[index].wins : 0)")
                 .font(.system(size: 56, weight: .black, design: .rounded).monospacedDigit())
@@ -69,6 +100,8 @@ struct ScoreboardView: View {
 
     private func load() {
         records = names.map(FindNumbersGame.records.record(for:))
+        caroRecords = names.map(CaroGame.records.record(for:))
+        onetRecords = names.map(OnetGame.records.record(for:))
     }
 }
 

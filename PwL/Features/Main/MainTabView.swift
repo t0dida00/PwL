@@ -4,6 +4,7 @@ import SwiftUI
 struct MainTabView: View {
     @Environment(AppState.self) private var appState
     @Environment(AccountStore.self) private var account
+    @Environment(NearbyService.self) private var nearby
 
     var body: some View {
         @Bindable var appState = appState
@@ -22,6 +23,14 @@ struct MainTabView: View {
                             FindNumbersSetupView()
                         case .findNumbersMatch(let match):
                             FindNumbersGameView(match: match)
+                        case .caroSetup:
+                            CaroSetupView()
+                        case .caroMatch(let match):
+                            CaroGameView(match: match)
+                        case .onetSetup:
+                            OnetSetupView()
+                        case .onetMatch(let match):
+                            OnetGameView(match: match)
                         }
                     }
             }
@@ -42,5 +51,9 @@ struct MainTabView: View {
             .tag(AppState.Tab.settings)
         }
         .tint(Theme.rose)
+        // Back on the game list = out of every lobby: drop the connection.
+        .onChange(of: appState.path.isEmpty) { _, isEmpty in
+            if isEmpty { nearby.leaveLobby() }
+        }
     }
 }
