@@ -37,4 +37,6 @@ enum Route: Hashable {
     case caroMatch(CaroMatch)
     case onetSetup
     case onetMatch(OnetMatch)
+    case seekItSetup
+    case seekItMatch(SeekItMatch)
 }

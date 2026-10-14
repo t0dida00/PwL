@@ -37,6 +37,14 @@ struct GameInfo: Identifiable {
             route: .onetSetup
         ),
         GameInfo(
+            id: "seek-it",
+            title: "Seek It",
+            badge: nil,
+            artwork: .seekIt,
+            colors: [Theme.Scene.wood, Theme.peach],
+            route: .seekItSetup
+        ),
+        GameInfo(
             id: "coming-soon",
             title: "More games",
             badge: "Coming soon",
@@ -56,6 +64,8 @@ enum GameArtwork {
     case caro
     /// Two matching tiles linked over a third.
     case onet
+    /// Clutter under a magnifying glass.
+    case seekIt
 }
 
 struct GameListView: View {
@@ -220,6 +230,8 @@ private struct GameTile: View {
             CaroArtwork()
         case .onet:
             OnetArtwork()
+        case .seekIt:
+            SeekItArtwork()
         }
     }
 }

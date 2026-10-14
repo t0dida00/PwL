@@ -137,6 +137,28 @@ firestore.rules   Firestore security rules. Deploy them whenever the data model 
 - **Stuck board.** When no pair is linkable, both devices reshuffle the remaining faces with a seed derived from the match seed and `shuffleCount`, so the boards stay identical without a message.
 - Winner: most pairs, then fewest mistakes. Records are stored under `OnetGame.records` (`gameID` "onet"), and the Scoreboard shows an "Onet wins" card.
 
+### Seek It (`Games/SeekIt`), hidden objects
+- Six illustrated rooms: Cozy Kitchen, Living Room, Secret Garden, Beach Day, Grandma's Attic and Detective Office.
+  They are **drawn in code** (`SeekItSceneArt`, one `Canvas` per scene) on a fixed **1800 × 800 canvas** (`SeekItCanvas`), scaled to fit. Colors come from `Theme.Scene`. There are no image assets.
+- **A match is a journey through 6 levels** (`SeekItLevel`), one room each, and **every level is equally hard**; only the room changes. There is no difficulty or room choice.
+  - Clearing a room starts the next level on both devices; its layout comes from the match seed plus the level number, so no message is needed. Scores add up, and the match ends after level 6.
+  - **Every room has exactly 50 different objects (no duplicate emoji) and 10 of them are to find.** Each player gets 2 hints per room.
+  - What makes it hard: mixed sizes (`sizeSpread` 0.45–1.6× a small base), tilt up to ±60°, heavy overlap (`spacing` 0.2 of combined radii, `pileChance` 45%), look-alike decoys, foreground leaves, curtains and light stripes (`SeekItForeground`), and the mess layers.
+  - **Mess layers.** `SeekItSceneArt.mess` (seeded per room) draws clutter behind the objects. `SeekItFrontMess` (seeded from the layout) lays 24 papers, leaves or crumbs **over** objects, each smaller than its object and offset, so nothing is fully hidden.
+  - **Targets are spread out** over the whole room. They are picked from all 50 objects (themed items and the named odds-and-ends `SeekItScene.clutter`): each pick is random among objects at least `targetSpacing` (220 canvas points) from every target so far, otherwise the farthest one is taken.
+  - Both phones always get the same map (`bothPlayersGetTheSameMapOnEveryLevelAndAfterRestart`).
+- **Clues are shapes, not words.** The tray shows each target's dark silhouette (`colorMultiply(Theme.ink)`). When it is found, the card reveals the colored object with a check in the finder's color.
+- **Scene model** (`SeekItCatalog.swift`, no SwiftUI). Each `SeekItScene` has:
+  - `regions` in the **same canvas coordinates as the art**;
+  - a themed `pool` of emoji `SeekItItem`s, each with allowed surfaces and an optional `lookAlike`.
+  - `SeekItLayout.make(scene:level:using:)` places themed items, fills up to 50 with unique named clutter on shelves, tables and floors, then picks 10 spread-out targets.
+- **Race like Find Numbers.** `check` returns `.hit(id)` for the nearest open target within its padded radius.
+  - The guest sends `claim(id, level)`, the host calls `claim(_:by:level:)` (the first one wins; claims from a finished level are dropped) and broadcasts `found`, which carries the level, and the guest applies it with `applyFound`.
+  - A miss gives a 0.8s lockout, and 5 in a row block the player for 10s. Hints are local only and reset each level.
+- The match screen is **landscape**: the HUD shows the level (n/6), the clock, found/total and both scores. A "Level n · Room ★★" card opens each room, the zoomable room fills the middle, and the silhouette tray plus 💡 sit at the bottom.
+  The setup screen (portrait) shows the 6-level map with live room thumbnails.
+- Records are stored under `SeekItGame.records` (`gameID` "seekIt"), one entry per full journey, and the Scoreboard shows a "Seek It wins" card.
+
 ## Accounts & Firebase
 - **Login:** Google Sign-In, then Firebase Auth (`FirebaseAccountBackend.signIn`). On first login the account is created with a unique PwL ID. Nickname defaults to the first word of the Google display name.
 - **PwL ID login:** after any Google sign-in, `enableCodeSignIn` links a hidden Email/Password credential to the same uid

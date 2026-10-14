@@ -31,6 +31,10 @@ struct MainTabView: View {
                             OnetSetupView()
                         case .onetMatch(let match):
                             OnetGameView(match: match)
+                        case .seekItSetup:
+                            SeekItSetupView()
+                        case .seekItMatch(let match):
+                            SeekItGameView(match: match)
                         }
                     }
             }

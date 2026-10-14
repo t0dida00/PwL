@@ -6,6 +6,7 @@ struct ScoreboardView: View {
     @State private var records: [PlayerRecord] = []
     @State private var caroRecords: [PlayerRecord] = []
     @State private var onetRecords: [PlayerRecord] = []
+    @State private var seekItRecords: [PlayerRecord] = []
     @State private var confirmReset = false
 
     private var names: [String] { account.playerNames }
@@ -38,6 +39,7 @@ struct ScoreboardView: View {
 
                 winsCard("Caro wins", caroRecords, unit: "rounds")
                 winsCard("Onet wins", onetRecords, unit: "games")
+                winsCard("Seek It wins", seekItRecords, unit: "games")
 
                 Button("Reset scoreboard", role: .destructive) { confirmReset = true }
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
@@ -56,6 +58,7 @@ struct ScoreboardView: View {
                 FindNumbersGame.records.reset(names)
                 CaroGame.records.reset(names)
                 OnetGame.records.reset(names)
+                SeekItGame.records.reset(names)
                 load()
             }
         }
@@ -102,6 +105,7 @@ struct ScoreboardView: View {
         records = names.map(FindNumbersGame.records.record(for:))
         caroRecords = names.map(CaroGame.records.record(for:))
         onetRecords = names.map(OnetGame.records.record(for:))
+        seekItRecords = names.map(SeekItGame.records.record(for:))
     }
 }
 
